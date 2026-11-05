@@ -1,0 +1,18 @@
+{
+  "demos": [
+    {
+      "id": "demo-field-guide",
+      "name": "Demo field guide LAB",
+      "kind": "Tool",
+      "description": "A JSON-driven card-deck handoff page: edit data/cards.json (title, base URL, sections, cards) and the page renders it. Genericized from the AI-DEMO2 personal-agents handoff page; no baked-in routes or credentials. Each deployment points at its own demo surfaces.",
+      "url": "http://127.0.0.1:7590",
+      "healthPath": "/api/health",
+      "composeFile": "demo-field-guide-LAB/docker-compose.yml",
+      "composeOverlays": [],
+      "tags": ["handoff", "documentation", "static", "json-driven"],
+      "where": "installed",
+      "repo": "https://github.com/curtismu7/demo-field-guide-LAB",
+      "notes": "Edit data/cards.json, npm run build, restart. Static server: GET only, loopback-only, zero dependencies, no outbound calls. No credentials on the page by design (build validates and refuses credential-shaped text in cards)."
+    }
+  ]
+}

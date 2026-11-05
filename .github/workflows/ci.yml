@@ -1,0 +1,33 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  build:
+    runs-on: ${{ fromJSON(vars.RUNS_ON || '["self-hosted","macOS"]') }}
+    strategy:
+      matrix:
+        node: [26]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm run build
+      - run: npm test
+      - run: PORT=7599 npm run doctor
+  secrets:
+    runs-on: ${{ fromJSON(vars.RUNS_ON || '["self-hosted","macOS"]') }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - run: PATH="/opt/homebrew/bin:$PATH" gitleaks detect --source . --redact -v
+      - name: forbidden strings (history)
+        run: |
+          list="$HOME/.config/demo-kit/forbidden-strings.txt"
+          if [ ! -f "$list" ]; then echo "forbidden-strings.txt missing on this runner"; exit 1; fi
+          hits=$(git log -p --all | grep -cF -f "$list" || true)
+          echo "forbidden-string hits: $hits"
+          [ "$hits" = "0" ]

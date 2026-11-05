@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo field guide</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">Demo handoff</p>
+    <h1>Demo field guide</h1>
+    <p class="standfirst">Every demo surface in one place: what it shows, what to click, and a link straight to the live route. Cards are defined in data/cards.json — edit that file, rebuild, done.</p>
+    <div class="creds">
+      <p class="how">Sign-in credentials are not published on this page. Ask the demo owner who sent you here.</p>
+    </div>
+    <div class="mode-toggle" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">
+      <span>Mode:</span>
+      <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
+      <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="rail" aria-label="Sections">
+      <p class="rail-title">Contents</p>
+      <a href="#start-here">Start here <span class="count">1</span></a>
+    </nav>
+    <main>
+      <section id="start-here">
+        <h2>Start here</h2>
+        <p class="sec-note">The one surface that shows the whole story.</p>
+        <div class="card">
+          <div class="card-top"><h3>Example card</h3><span class="badge ok">Verified live</span></div>
+          <p class="route">/example</p>
+          <p>Replace this card in data/cards.json with your real demo surfaces. Each card is: title, optional badge, the route it lives at, a short what-it-shows paragraph, and optional numbered steps.</p>
+          <ul class="steps"><li>Sign in (credentials from your demo owner).</li><li>Click the demo&#39;s primary action and watch the governed flow run.</li><li>Change one setting and run it again to see the gate respond.</li></ul>
+          <div class="btnrow"><a class="run" href="http://127.0.0.1:7590/example" target="_blank" rel="noopener">Open /example &rarr;</a></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

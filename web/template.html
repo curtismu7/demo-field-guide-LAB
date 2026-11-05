@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">__EYEBROW__</p>
+    <h1>__TITLE__</h1>
+    <p class="standfirst">__INTRO__</p>
+    <div class="creds">
+      <p class="how">__CREDENTIALS_NOTE__</p>
+    </div>
+    <div class="mode-toggle" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">
+      <span>Mode:</span>
+      <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
+      <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="rail" aria-label="Sections">
+      <p class="rail-title">Contents</p>
+      __NAV__
+    </nav>
+    <main>
+__SECTIONS__
+    </main>
+  </div>
+</div>
+</body>
+</html>

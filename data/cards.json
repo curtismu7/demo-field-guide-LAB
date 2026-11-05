@@ -1,0 +1,28 @@
+{
+  "title": "Demo field guide",
+  "eyebrow": "Demo handoff",
+  "intro": "Every demo surface in one place: what it shows, what to click, and a link straight to the live route. Cards are defined in data/cards.json — edit that file, rebuild, done.",
+  "baseUrl": "http://127.0.0.1:7590",
+  "credentialsNote": "Sign-in credentials are not published on this page. Ask the demo owner who sent you here.",
+  "sections": [
+    {
+      "id": "start-here",
+      "name": "Start here",
+      "note": "The one surface that shows the whole story.",
+      "cards": [
+        {
+          "title": "Example card",
+          "badge": "Verified live",
+          "badgeTone": "ok",
+          "route": "/example",
+          "what": "Replace this card in data/cards.json with your real demo surfaces. Each card is: title, optional badge, the route it lives at, a short what-it-shows paragraph, and optional numbered steps.",
+          "steps": [
+            "Sign in (credentials from your demo owner).",
+            "Click the demo's primary action and watch the governed flow run.",
+            "Change one setting and run it again to see the gate respond."
+          ]
+        }
+      ]
+    }
+  ]
+}
