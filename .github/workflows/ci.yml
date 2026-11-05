@@ -29,9 +29,11 @@ jobs:
           sudo mv gitleaks /usr/local/bin/
       - run: gitleaks detect --source . --redact -v
       - name: forbidden strings (history)
+        env:
+          FORBIDDEN_STRINGS: ${{ secrets.FORBIDDEN_STRINGS }}
         run: |
-          list="$HOME/.config/demo-kit/forbidden-strings.txt"
-          if [ ! -f "$list" ]; then echo "forbidden-strings.txt missing on this runner"; exit 1; fi
-          hits=$(git log -p --all | grep -cF -f "$list" || true)
+          if [ -z "$FORBIDDEN_STRINGS" ]; then echo "FORBIDDEN_STRINGS secret missing"; exit 1; fi
+          printf '%s\n' "$FORBIDDEN_STRINGS" > /tmp/forbidden-strings.txt
+          hits=$(git log -p --all | grep -cF -f /tmp/forbidden-strings.txt || true)
           echo "forbidden-string hits: $hits"
           [ "$hits" = "0" ]
