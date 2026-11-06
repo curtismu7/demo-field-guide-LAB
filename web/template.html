@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__</title>
 <link rel="stylesheet" href="styles.css">
+<script>
+(function () {
+  var t = localStorage.getItem("dfg.theme");
+  if (t && t !== "auto") document.documentElement.dataset.theme = t;
+})();
+</script>
 </head>
 <body>
 <div class="wrap">
@@ -20,7 +26,28 @@
       <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
       <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
     </div>
+    <label class="shell-theme mode-toggle" title="Auto follows your system setting.">
+      <span>Theme:</span>
+      <select id="theme-select">
+        <option value="auto">Auto</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
   </header>
+  <script>
+  (function () {
+    var sel = document.getElementById("theme-select");
+    if (!sel) return;
+    sel.value = localStorage.getItem("dfg.theme") || "auto";
+    sel.addEventListener("change", function () {
+      var v = sel.value;
+      if (v === "auto") delete document.documentElement.dataset.theme;
+      else document.documentElement.dataset.theme = v;
+      localStorage.setItem("dfg.theme", v);
+    });
+  })();
+  </script>
   <div class="layout">
     <nav class="rail" aria-label="Sections">
       <p class="rail-title">Contents</p>
