@@ -9,10 +9,16 @@
       "healthPath": "/api/health",
       "composeFile": "demo-field-guide-LAB/docker-compose.yml",
       "composeOverlays": [],
-      "tags": ["handoff", "documentation", "static", "json-driven"],
+      "tags": [
+        "handoff",
+        "documentation",
+        "static",
+        "json-driven"
+      ],
       "where": "installed",
       "repo": "https://github.com/curtismu7/demo-field-guide-LAB",
-      "notes": "Edit data/cards.json, npm run build, restart. Static server: GET only, loopback-only, zero dependencies, no outbound calls. No credentials on the page by design (build validates and refuses credential-shaped text in cards)."
+      "notes": "Edit data/cards.json, npm run build, restart. Static server: GET only, loopback-only, zero dependencies, no outbound calls. No credentials on the page by design (build validates and refuses credential-shaped text in cards).",
+      "catalogId": "D115"
     }
   ]
 }
