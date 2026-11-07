@@ -37,3 +37,5 @@ jobs:
           hits=$(git log -p --all | grep -cF -f /tmp/forbidden-strings.txt || true)
           echo "forbidden-string hits: $hits"
           [ "$hits" = "0" ]
+      - name: No AI attribution
+        run: bash scripts/check-no-ai-attribution.sh
