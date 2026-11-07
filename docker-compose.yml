@@ -8,4 +8,5 @@ services:
     environment:
       - PORT=7590
       - BIND=0.0.0.0
+      - LAB_ALLOWED_HOSTS=${LAB_ALLOWED_HOSTS:-demo-field-guide.local.ping-devops.com}
     restart: unless-stopped

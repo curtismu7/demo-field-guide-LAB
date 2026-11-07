@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { validateDeck, render, escapeHtml, build } from '../scripts/build.mjs';
-import { createServer } from '../server/index.js';
+import { createServer, allowedExtraHosts } from '../server/index.js';
 
 const validDeck = {
   title: 'T', eyebrow: 'E', baseUrl: 'http://127.0.0.1:1',
@@ -114,4 +114,22 @@ test('rule 19: /api/mode answers 409 (no Real mode) and /api/info reports realAv
   assert.equal(mode.status, 409);
   assert.equal(JSON.parse(mode.body).error, 'real_not_available');
   await new Promise((res) => server.close(res));
+});
+
+test('LAB_ALLOWED_HOSTS: a named host (any port) is served, others stay 421, a bad name throws', async () => {
+  assert.deepEqual([...allowedExtraHosts({ LAB_ALLOWED_HOSTS: 'demo-field-guide.local.ping-devops.com, Other.Example' })], ['demo-field-guide.local.ping-devops.com', 'other.example']);
+  assert.throws(() => allowedExtraHosts({ LAB_ALLOWED_HOSTS: 'bad host!' }), /not a host name/);
+  const server = createServer({ allowedHosts: allowedExtraHosts({ LAB_ALLOWED_HOSTS: 'demo-field-guide.local.ping-devops.com' }) });
+  await new Promise((res) => server.listen(0, '127.0.0.1', res));
+  const port = server.address().port;
+  const get = (host) => new Promise((resolve, reject) => { http.get({ port, host: '127.0.0.1', path: '/api/health', headers: { host } }, (r) => { r.resume(); r.on('end', () => resolve(r.statusCode)); }).on('error', reject); });
+  assert.equal(await get('demo-field-guide.local.ping-devops.com:7590'), 200);
+  assert.equal(await get('evil.example:7590'), 421);
+  await new Promise((res) => server.close(res));
+  const closed = createServer();
+  await new Promise((res) => closed.listen(0, '127.0.0.1', res));
+  const p2 = closed.address().port;
+  const code = await new Promise((resolve, reject) => { http.get({ port: p2, host: '127.0.0.1', path: '/api/health', headers: { host: 'demo-field-guide.local.ping-devops.com:7590' } }, (r) => { r.resume(); r.on('end', () => resolve(r.statusCode)); }).on('error', reject); });
+  assert.equal(code, 421, 'unset = loopback only');
+  await new Promise((res) => closed.close(res));
 });
