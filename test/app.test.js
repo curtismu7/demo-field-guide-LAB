@@ -133,3 +133,27 @@ test('LAB_ALLOWED_HOSTS: a named host (any port) is served, others stay 421, a b
   assert.equal(code, 421, 'unset = loopback only');
   await new Promise((res) => closed.close(res));
 });
+
+test('no inline script: the page loads its scripts as files, and the CSP allows scripts only from this origin', async () => {
+  build();
+  const html = fs.readFileSync(new URL('../dist/index.html', import.meta.url), 'utf8');
+  assert.ok(!/<script(?![^>]*\ssrc=)[^>]*>/i.test(html), 'every <script> has a src (the CSP blocks inline script)');
+  assert.ok(html.includes('src="theme-init.js"') && html.includes('src="theme.js"'));
+  const server = createServer();
+  const port = await new Promise((res) => server.listen(0, '127.0.0.1', () => res(server.address().port)));
+  const fetchPath = (p) => new Promise((resolve, reject) => {
+    http.get({ host: '127.0.0.1', port, path: p }, (r) => { let b = ''; r.on('data', (c) => (b += c)); r.on('end', () => resolve({ status: r.statusCode, headers: r.headers, body: b })); }).on('error', reject);
+  });
+  try {
+    const page = await fetchPath('/');
+    const csp = page.headers['content-security-policy'];
+    assert.match(csp, /script-src 'self'/);
+    assert.doesNotMatch(csp, /unsafe-inline|unsafe-eval/);
+    for (const f of ['/theme-init.js', '/theme.js']) {
+      const r = await fetchPath(f);
+      assert.equal(r.status, 200, f);
+      assert.match(r.headers['content-type'], /^text\/javascript/);
+      assert.ok(r.body.includes('dfg.theme'), `${f} is the theme script`);
+    }
+  } finally { await new Promise((res) => server.close(res)); }
+});

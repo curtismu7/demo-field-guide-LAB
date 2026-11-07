@@ -5,12 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Demo field guide</title>
 <link rel="stylesheet" href="styles.css">
-<script>
-(function () {
-  var t = localStorage.getItem("dfg.theme");
-  if (t && t !== "auto") document.documentElement.dataset.theme = t;
-})();
-</script>
+<script src="theme-init.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -35,19 +30,7 @@
       </select>
     </label>
   </header>
-  <script>
-  (function () {
-    var sel = document.getElementById("theme-select");
-    if (!sel) return;
-    sel.value = localStorage.getItem("dfg.theme") || "auto";
-    sel.addEventListener("change", function () {
-      var v = sel.value;
-      if (v === "auto") delete document.documentElement.dataset.theme;
-      else document.documentElement.dataset.theme = v;
-      localStorage.setItem("dfg.theme", v);
-    });
-  })();
-  </script>
+  <script src="theme.js"></script>
   <div class="layout">
     <nav class="rail" aria-label="Sections">
       <p class="rail-title">Contents</p>
