@@ -17,15 +17,24 @@ const HEADERS = {
   'cache-control': 'no-store',
 };
 const LOOPBACK_HOST = /^(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/;
+// Extra Host names this lab answers to (family standard): LAB_ALLOWED_HOSTS, comma separated host names that
+// point at this Mac, such as the lab-proxy's <lab>.local.ping-devops.com. Loopback always works; unset = loopback only.
+const HOSTNAME = /^(?=.{1,253}$)[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i;
+export function allowedExtraHosts(env = process.env) {
+  const extra = String(env.LAB_ALLOWED_HOSTS || '').split(',').map((h) => h.trim().toLowerCase()).filter(Boolean);
+  for (const h of extra) if (!HOSTNAME.test(h)) throw new Error(`LAB_ALLOWED_HOSTS: not a host name: ${h}`);
+  return new Set(extra);
+}
 const MODE = process.env.MODE ?? 'mock';
 if (MODE !== 'mock') throw new Error(`MODE must be mock (this app has no live mode), got ${MODE}`);
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
-export function createServer({ hosted = false } = {}) {
+export function createServer({ hosted = false, allowedHosts = allowedExtraHosts() } = {}) {
   return http.createServer((req, res) => {
     const send = (code, type, body) => { res.writeHead(code, { ...HEADERS, 'content-type': type }); res.end(req.method === 'HEAD' ? undefined : body); };
     if (req.method !== 'GET' && req.method !== 'HEAD' && !(req.method === 'POST' && new URL(req.url, 'http://x').pathname === '/api/mode')) return send(405, 'text/plain', 'method not allowed');
-    if (!LOOPBACK_HOST.test(req.headers.host || '')) return send(421, 'text/plain', 'bad host');
+    const hostHeader = req.headers.host || '';
+    if (!LOOPBACK_HOST.test(hostHeader) && !allowedHosts.has(hostHeader.toLowerCase().replace(/:\d+$/, ''))) return send(421, 'text/plain', 'bad host');
     const p = new URL(req.url, 'http://x').pathname;
     if (p === '/api/health') return send(200, 'application/json', JSON.stringify({ schema: 'demo-health/1', at: new Date().toISOString(), state: 'ready', runtime: 'offline', mode: 'mock-only', demo: { id: 'demo-field-guide', name: 'Demo field guide', version: pkg.version } }));
     if (p === '/api/info') return send(200, 'application/json', JSON.stringify({ mode: MODE, simulated: false, hosted, kind: 'static-handoff-page', realAvailable: false }));

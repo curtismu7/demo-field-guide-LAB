@@ -10,10 +10,8 @@
       "composeFile": "demo-field-guide-LAB/docker-compose.yml",
       "composeOverlays": [],
       "tags": [
-        "handoff",
-        "documentation",
-        "static",
-        "json-driven"
+        "learning",
+        "simulated"
       ],
       "where": "installed",
       "repo": "https://github.com/curtismu7/demo-field-guide-LAB",
