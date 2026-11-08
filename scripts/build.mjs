@@ -92,7 +92,7 @@ export function build() {
   fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
   fs.writeFileSync(path.join(root, 'dist', 'index.html'), render(deck));
   fs.copyFileSync(path.join(root, 'web', 'styles.css'), path.join(root, 'dist', 'styles.css'));
-  for (const f of ['theme-init.js', 'theme.js']) fs.copyFileSync(path.join(root, 'web', f), path.join(root, 'dist', f));
+  for (const f of ['theme-init.js', 'theme.js', 'shelf.js']) fs.copyFileSync(path.join(root, 'web', f), path.join(root, 'dist', f));
   const cards = deck.sections.reduce((n, s) => n + s.cards.length, 0);
   console.log(`built dist/index.html: ${deck.sections.length} sections, ${cards} cards, baseUrl ${deck.baseUrl}`);
 }

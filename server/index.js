@@ -3,6 +3,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { shelfInfo } from './shelfLink.js';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FILES = {
@@ -11,11 +12,12 @@ const FILES = {
   '/styles.css': ['styles.css', 'text/css; charset=utf-8'],
   '/theme-init.js': ['theme-init.js', 'text/javascript; charset=utf-8'],
   '/theme.js': ['theme.js', 'text/javascript; charset=utf-8'],
+  '/shelf.js': ['shelf.js', 'text/javascript; charset=utf-8'],
 };
 const HEADERS = {
   'x-content-type-options': 'nosniff',
   'referrer-policy': 'no-referrer',
-  'content-security-policy': "default-src 'none'; script-src 'self'; style-src 'self'; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+  'content-security-policy': "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
   'cache-control': 'no-store',
 };
 const LOOPBACK_HOST = /^(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/;
@@ -31,7 +33,7 @@ const MODE = process.env.MODE ?? 'mock';
 if (MODE !== 'mock') throw new Error(`MODE must be mock (this app has no live mode), got ${MODE}`);
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
-export function createServer({ hosted = false, allowedHosts = allowedExtraHosts() } = {}) {
+export function createServer({ hosted = false, allowedHosts = allowedExtraHosts(), env = process.env } = {}) {
   return http.createServer((req, res) => {
     const send = (code, type, body) => { res.writeHead(code, { ...HEADERS, 'content-type': type }); res.end(req.method === 'HEAD' ? undefined : body); };
     if (req.method !== 'GET' && req.method !== 'HEAD' && !(req.method === 'POST' && new URL(req.url, 'http://x').pathname === '/api/mode')) return send(405, 'text/plain', 'method not allowed');
@@ -39,6 +41,8 @@ export function createServer({ hosted = false, allowedHosts = allowedExtraHosts(
     if (!LOOPBACK_HOST.test(hostHeader) && !allowedHosts.has(hostHeader.toLowerCase().replace(/:\d+$/, ''))) return send(421, 'text/plain', 'bad host');
     const p = new URL(req.url, 'http://x').pathname;
     if (p === '/api/health') return send(200, 'application/json', JSON.stringify({ schema: 'demo-health/1', at: new Date().toISOString(), state: 'ready', runtime: 'offline', mode: 'mock-only', demo: { id: 'demo-field-guide', name: 'Demo field guide', version: pkg.version } }));
+    // The header "Shelf" button reads this (GET only: the method gate above refuses everything else).
+    if (p === '/api/shelf') return send(200, 'application/json', JSON.stringify(shelfInfo(env)));
     if (p === '/api/info') return send(200, 'application/json', JSON.stringify({ mode: MODE, simulated: false, hosted, kind: 'static-handoff-page', realAvailable: false }));
     // rule 19 mode switch route: POST /api/mode (app.post('/api/mode', ...)). This
     // app is static and mock-only, so any switch request is refused with 409 per the
