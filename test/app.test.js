@@ -157,3 +157,20 @@ test('no inline script: the page loads its scripts as files, and the CSP allows 
     }
   } finally { await new Promise((res) => server.close(res)); }
 });
+
+test('GET /api/shelf returns the configured SHELF_URL (trailing slash trimmed), and a POST to it is not 200', async () => {
+  const server = createServer({ env: { SHELF_URL: 'https://shelf.example:8443/' } });
+  const port = await new Promise((res) => server.listen(0, '127.0.0.1', () => res(server.address().port)));
+  const call = (method) => new Promise((resolve, reject) => {
+    const req = http.request({ host: '127.0.0.1', port, path: '/api/shelf', method }, (r) => { let b = ''; r.on('data', (c) => (b += c)); r.on('end', () => resolve({ status: r.statusCode, body: b })); });
+    req.on('error', reject); req.end();
+  });
+  try {
+    const ok = await call('GET');
+    assert.equal(ok.status, 200);
+    assert.deepEqual(JSON.parse(ok.body), { shelfUrl: 'https://shelf.example:8443' });
+    assert.notEqual((await call('POST')).status, 200);
+    const page = await new Promise((resolve, reject) => { http.get({ host: '127.0.0.1', port, path: '/' }, (r) => { r.resume(); resolve(r.headers['content-security-policy']); }).on('error', reject); });
+    assert.match(page, /connect-src 'self'/, 'the page may fetch /api/shelf');
+  } finally { await new Promise((res) => server.close(res)); }
+});
