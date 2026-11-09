@@ -4,8 +4,8 @@
   sel.value = localStorage.getItem("dfg.theme") || "auto";
   sel.addEventListener("change", function () {
     var v = sel.value;
-    if (v === "auto") delete document.documentElement.dataset.theme;
-    else document.documentElement.dataset.theme = v;
     localStorage.setItem("dfg.theme", v);
+    var dark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.dataset.theme = v !== "auto" ? v : (dark ? "dark" : "light");
   });
 })();
