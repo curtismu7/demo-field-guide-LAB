@@ -105,3 +105,12 @@ section h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
 .shelf-link { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 12px; border: 1px solid var(--control-border); border-radius: 6px; background: var(--surface); color: var(--ink); font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; margin-bottom: 8px; }
 .shelf-link:hover { border-color: var(--accent); }
 .shelf-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* TopMenu bar: dark background so its white (--on-box) controls are visible in light theme too. */
+.top-menu {
+  background: var(--box-dark, #16181f);
+  color: var(--on-box, #fcfcfc);
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  display: inline-flex;
+}

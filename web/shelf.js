@@ -14,8 +14,9 @@
       a.rel = "noreferrer";
       a.title = "Open the demo shelf (launcher)";
       a.textContent = "Shelf";
-      var first = bar.querySelector(".mode-toggle");
-      bar.insertBefore(a, first);
+      a.classList.add("top-menu__shelf", "top-menu__shelf--accent");
+      var row1 = bar.querySelector(".top-menu__row");
+      if (row1) row1.appendChild(a); else bar.appendChild(a);
     })
     .catch(function () { /* stay hidden: no shelf, no button */ });
 })();

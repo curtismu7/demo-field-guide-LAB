@@ -6,6 +6,7 @@
 <title>__TITLE__</title>
 <link rel="stylesheet" href="standalone-ui.css">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="top-menu.css">
 <script src="theme-init.js"></script>
 </head>
 <body>
@@ -17,21 +18,33 @@
     <div class="creds">
       <p class="how">__CREDENTIALS_NOTE__</p>
     </div>
-    <div class="mode-toggle" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">
-      <span>Mode:</span>
-      <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
-      <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
-    </div>
-    <label class="shell-theme mode-toggle" title="Auto follows your system setting.">
-      <span>Theme:</span>
-      <select id="theme-select">
-        <option value="auto">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </label>
+    <nav class="top-menu" data-testid="top-menu" aria-label="Top menu">
+      <div class="top-menu__row">
+        <span class="top-menu__ctl" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">Mode:
+          <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
+          <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
+        </span>
+      </div>
+      <div class="top-menu__row">
+        <span class="top-menu__ctl" title="Auto follows your system setting.">Theme:
+          <select id="theme-select">
+            <option value="auto">Auto</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </span>
+        <span class="top-menu__ctl">Text size:
+          <select id="font-select" aria-label="Font size">
+            <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+          </select>
+          <button type="button" id="font-minus" aria-label="Smaller text">A−</button>
+          <button type="button" id="font-plus" aria-label="Larger text">A+</button>
+        </span>
+      </div>
+    </nav>
   </header>
   <script src="theme.js"></script>
+  <script src="font.js"></script>
   <script src="shelf.js"></script>
   <div class="layout">
     <nav class="rail" aria-label="Sections">
