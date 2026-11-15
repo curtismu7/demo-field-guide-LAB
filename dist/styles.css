@@ -5,8 +5,8 @@
   --ink-soft: #4d5563;
   --ink-faint: #79818f;
   --line: #e3e1dd;
-  --accent: #b5231a;
-  --accent-deep: #8f1a13;
+  --lab-accent: #b5231a;
+  --lab-accent-deep: #8f1a13;
   --accent-soft: #faeceb;
   --ok: #1d6f4a;
   --ok-soft: #e8f4ee;
@@ -23,8 +23,8 @@
   --ink-soft: #b4bac4;
   --ink-faint: #7f8794;
   --line: #2c313a;
-  --accent: #e5544a;
-  --accent-deep: #f0776f;
+  --lab-accent: #e5544a;
+  --lab-accent-deep: #f0776f;
   --accent-soft: #3a2422;
   --ok: #5cc193;
   --ok-soft: #1f3329;
@@ -35,24 +35,25 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+html { font-size: var(--fs, 16px); }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-.wrap { max-width: 1060px; margin: 0 auto; padding-block: 28px 64px; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
+.page { max-width: 1100px; margin: 0 auto; padding-block: 20px 64px; padding-inline: max(16px, env(safe-area-inset-left, 0px)); }
 
 h1, h2, h3 { font-family: 'Barlow', 'Avenir Next', 'Segoe UI', sans-serif; text-wrap: balance; margin: 0; }
-a { color: var(--accent-deep); }
+a { color: var(--lab-accent-deep); }
 
-.masthead { border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 22px; }
+.page-head { border-bottom: 3px solid var(--ink); padding-bottom: 18px; margin-bottom: 22px; }
 .eyebrow {
   font-family: 'Barlow', sans-serif; font-size: 12px; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--lab-accent);
   margin: 0 0 8px;
 }
-.masthead h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -0.01em; }
+.page-head h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -0.01em; }
 .standfirst { max-width: 62ch; color: var(--ink-soft); margin: 10px 0 0; }
 
 .creds { margin-top: 14px; padding: 10px 14px; border: 1px solid var(--warn); border-left-width: 4px; border-radius: 6px; background: var(--warn-soft); }
@@ -64,7 +65,7 @@ a { color: var(--accent-deep); }
 .rail { position: sticky; top: 16px; background: var(--rail-bg); border: 1px solid var(--control-border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
 .rail-title { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 4px; }
 .rail a { color: var(--ink); text-decoration: none; font-size: 14px; display: flex; justify-content: space-between; gap: 8px; padding: 4px 6px; border-radius: 4px; }
-.rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--accent-deep); }
+.rail a:hover, .rail a:focus-visible { background: var(--accent-soft); color: var(--lab-accent-deep); }
 .rail .count { color: var(--ink-faint); font-variant-numeric: tabular-nums; }
 
 section { margin-bottom: 34px; }
@@ -80,28 +81,28 @@ section h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
 .steps li { margin-bottom: 4px; }
 .badge { font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; }
 .badge.ok { color: var(--ok); background: var(--ok-soft); border: 1px solid var(--ok); }
-.badge.accent { color: var(--accent-deep); background: var(--accent-soft); border: 1px solid var(--accent); }
+.badge.accent { color: var(--lab-accent-deep); background: var(--accent-soft); border: 1px solid var(--lab-accent); }
 .badge.warn { color: var(--warn); background: var(--warn-soft); border: 1px solid var(--warn); }
 .btnrow { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 .run {
   display: inline-block; padding: 6px 14px; border-radius: 6px; text-decoration: none;
-  font-weight: 600; font-size: 14px; background: var(--accent); color: var(--surface);
+  font-weight: 600; font-size: 14px; background: var(--accent); color: var(--on-accent);
   border: 1px solid var(--accent);
 }
 .run:hover, .run:focus-visible { background: var(--accent-deep); }
 .run:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-/* Rule 19 mode toggle — permanently disabled: this app has no Real mode */
-.mode-toggle { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--ink-faint); }
-.mode-toggle button {
-  padding: 4px 12px; border-radius: 6px; border: 1px solid var(--control-border);
-  background: var(--surface); color: var(--ink); font: inherit; cursor: not-allowed;
-}
-.mode-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--surface); border-color: var(--accent); }
-.mode-toggle button:disabled { opacity: 0.75; cursor: not-allowed; }
-.shell-theme select { background: var(--surface); color: var(--ink); border: 1px solid var(--control-border); border-radius: 6px; padding: 4px 6px; font: inherit; font-size: 13px; }
-
-/* Shelf button (shelf.js): the link back to the launcher. */
-.shelf-link { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 12px; border: 1px solid var(--control-border); border-radius: 6px; background: var(--surface); color: var(--ink); font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; margin-bottom: 8px; }
-.shelf-link:hover { border-color: var(--accent); }
-.shelf-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* Shell bar (STANDALONE-UI-PATTERNS.md section 1): Core Dark in both themes, Ping Red gradient rule, full-bleed over the body gutter, wraps at 600px.
+   Layout only; colours are the shared tokens. The TopMenu controls (top-menu.css) sit in .shell-right. */
+.shell-bar { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding: 0.6rem 1.25rem; margin: 0 -16px;
+  background: var(--box-dark); color: var(--on-box); border-bottom: 3px solid transparent; border-image: var(--accent-gradient) 1; }
+.shell-brand { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; letter-spacing: 0.02em; }
+.shell-logo { display: inline-grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: 4px; background: var(--accent-gradient); color: var(--on-accent); font-weight: 800; font-size: 0.8rem; }
+.shell-badge { padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--accent-gradient); color: var(--on-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.shell-nav { display: flex; flex-wrap: wrap; gap: 0.25rem; flex: 1 1 auto; }
+.shell-nav a { padding: 0.3rem 0.75rem; border-radius: 999px; border: 1px solid transparent; color: var(--on-box); text-decoration: none; font-size: 0.85rem; font-weight: 500; }
+.shell-nav a:hover { border-color: var(--on-box); }
+.shell-nav a[aria-current="page"] { background: var(--accent-gradient); color: var(--on-accent); font-weight: 600; }
+/* top-menu.css gives its labels the page text colour; on the dark bar they read in --on-box like the rest of the bar. */
+.shell-bar .top-menu__ctl { color: var(--on-box); }
+@media (max-width: 600px) { .shell-bar { gap: 0.75rem; padding: 0.6rem 1rem; } .shell-nav { order: 3; flex-basis: 100%; } }

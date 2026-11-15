@@ -3,7 +3,7 @@
       var STEP = { S: "14px", M: "16px", L: "18px" };
       var order = ["S", "M", "L"];
       function apply(step) {
-        document.documentElement.style.fontSize = STEP[step] || "16px";
+        document.documentElement.style.setProperty("--fs", STEP[step] || "16px");
         try { localStorage.setItem("dfg.font", step); } catch (e) {}
         var sel = document.getElementById("font-select");
         if (sel) sel.value = step;

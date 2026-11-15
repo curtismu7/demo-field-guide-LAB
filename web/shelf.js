@@ -1,7 +1,7 @@
 // The "Shelf" button: a link back to the launcher (demo shelf). Same behaviour as the family ShelfLink component
 // (fetch GET /api/shelf once, render nothing until a URL is known), written as a plain script because this page has no React.
 (function () {
-  var bar = document.querySelector("header.masthead");
+  var bar = document.querySelector("header.shell-bar");
   if (!bar) return;
   fetch("/api/shelf", { credentials: "omit", headers: { Accept: "application/json" } })
     .then(function (r) { return r.ok ? r.json() : null; })
