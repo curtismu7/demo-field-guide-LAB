@@ -1,7 +1,7 @@
 // The "Shelf" button: a link back to the launcher (demo shelf). Same behaviour as the family ShelfLink component
 // (fetch GET /api/shelf once, render nothing until a URL is known), written as a plain script because this page has no React.
 (function () {
-  var bar = document.querySelector("header.masthead");
+  var bar = document.querySelector("header.shell-bar");
   if (!bar) return;
   fetch("/api/shelf", { credentials: "omit", headers: { Accept: "application/json" } })
     .then(function (r) { return r.ok ? r.json() : null; })
@@ -14,8 +14,9 @@
       a.rel = "noreferrer";
       a.title = "Open the demo shelf (launcher)";
       a.textContent = "Shelf";
-      var first = bar.querySelector(".mode-toggle");
-      bar.insertBefore(a, first);
+      a.classList.add("top-menu__shelf", "top-menu__shelf--accent");
+      var row1 = bar.querySelector(".top-menu__row");
+      if (row1) row1.appendChild(a); else bar.appendChild(a);
     })
     .catch(function () { /* stay hidden: no shelf, no button */ });
 })();

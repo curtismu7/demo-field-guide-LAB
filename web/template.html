@@ -10,51 +10,61 @@
 <script src="theme-init.js"></script>
 </head>
 <body>
-<div class="wrap">
-  <header class="masthead">
+<header class="shell-bar">
+  <span class="shell-brand">
+    <span class="shell-logo" aria-hidden="true">FG</span>
+    <span class="shell-name">Demo field guide</span>
+    <span class="shell-badge" data-testid="mode-badge">Mock</span>
+  </span>
+  <nav class="shell-nav" aria-label="Site">
+    <a href="./" aria-current="page">Field guide</a>
+  </nav>
+  <span class="top-menu shell-right" data-testid="top-menu">
+    <span class="top-menu__row">
+      <span class="top-menu__ctl" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">Mode:
+        <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
+        <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
+      </span>
+    </span>
+    <span class="top-menu__row">
+      <span class="top-menu__ctl" title="Auto follows your system setting.">Theme:
+        <select id="theme-select" aria-label="Theme">
+          <option value="auto">Auto</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </span>
+      <span class="top-menu__ctl">Text size:
+        <select id="font-select" aria-label="Font size">
+          <option value="S">S</option><option value="M">M</option><option value="L">L</option>
+        </select>
+        <button type="button" id="font-minus" aria-label="Smaller text">A−</button>
+        <button type="button" id="font-plus" aria-label="Larger text">A+</button>
+      </span>
+    </span>
+  </span>
+</header>
+<script src="theme.js"></script>
+<script src="font.js"></script>
+<script src="shelf.js"></script>
+<main class="page">
+  <div class="page-head">
     <p class="eyebrow">__EYEBROW__</p>
     <h1>__TITLE__</h1>
     <p class="standfirst">__INTRO__</p>
     <div class="creds">
       <p class="how">__CREDENTIALS_NOTE__</p>
     </div>
-    <nav class="top-menu" data-testid="top-menu" aria-label="Top menu">
-      <div class="top-menu__row">
-        <span class="top-menu__ctl" data-testid="mode-toggle" title="This app is a static page: Mock is the only mode.">Mode:
-          <button type="button" aria-pressed="true" data-testid="mode-mock">Mock</button>
-          <button type="button" aria-pressed="false" data-testid="mode-real" disabled>Real</button>
-        </span>
-      </div>
-      <div class="top-menu__row">
-        <span class="top-menu__ctl" title="Auto follows your system setting.">Theme:
-          <select id="theme-select">
-            <option value="auto">Auto</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </span>
-        <span class="top-menu__ctl">Text size:
-          <select id="font-select" aria-label="Font size">
-            <option value="S">S</option><option value="M">M</option><option value="L">L</option>
-          </select>
-          <button type="button" id="font-minus" aria-label="Smaller text">A−</button>
-          <button type="button" id="font-plus" aria-label="Larger text">A+</button>
-        </span>
-      </div>
-    </nav>
-  </header>
-  <script src="theme.js"></script>
-  <script src="font.js"></script>
-  <script src="shelf.js"></script>
+  </div>
   <div class="layout">
     <nav class="rail" aria-label="Sections">
       <p class="rail-title">Contents</p>
       __NAV__
     </nav>
-    <main>
+    <div class="sections">
 __SECTIONS__
-    </main>
+    </div>
   </div>
-</div>
+</main>
 </body>
 </html>
